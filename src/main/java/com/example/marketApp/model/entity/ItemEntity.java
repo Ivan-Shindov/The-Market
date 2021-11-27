@@ -1,5 +1,7 @@
 package com.example.marketApp.model.entity;
 
+import org.hibernate.engine.internal.Cascade;
+
 import javax.persistence.*;
 
 @Entity
@@ -9,7 +11,8 @@ public class ItemEntity extends BaseEntity {
     @Column(nullable = false)
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private UserEntity owner;
 
     public ItemEntity() {

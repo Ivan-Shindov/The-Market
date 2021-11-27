@@ -3,6 +3,8 @@ package com.example.marketApp.web;
 import com.example.marketApp.model.dto.PostItemDto;
 import com.example.marketApp.model.dto.ViewItemDto;
 import com.example.marketApp.model.entity.ItemEntity;
+import com.example.marketApp.model.projection.AllItemsProjectionDTO;
+import com.example.marketApp.model.projection.ItemProjectionDTO;
 import com.example.marketApp.service.ItemService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,30 +22,37 @@ public class ItemController {
     }
 
     @GetMapping("/items/{id}")
-    public ResponseEntity<ItemEntity> getItemById(@PathVariable Long id) {
-        ItemEntity getItemDto = itemService.getItemById(id);
+    public ResponseEntity<ItemProjectionDTO> getItemById(@PathVariable Long id) {
+        ItemProjectionDTO itemView = itemService.getItemById(id);
 
-
-        return ResponseEntity.ok(getItemDto);
+        return ResponseEntity.ok(itemView);
     }
 
-    @PostMapping("/items")
-    public ResponseEntity<ViewItemDto> postItem (@RequestBody PostItemDto postItemDto,
-                                                 UriComponentsBuilder builder) {
+    @PostMapping("/items/create")
+    public ResponseEntity<ViewItemDto> create(@RequestBody PostItemDto postItemDto,
+                                              UriComponentsBuilder builder) {
 
-        ViewItemDto viewItemDto = itemService.createItem(postItemDto);
-        URI uriLocation = builder.path("/items/{id}")
-                .buildAndExpand(viewItemDto.getId()).toUri();
+       try {
+           ViewItemDto viewItemDto = itemService.createItem(postItemDto);
+           URI uriLocation = builder.path("/items/{id}")
+                   .buildAndExpand(viewItemDto.getId()).toUri();
 
-        return ResponseEntity
-                .created(uriLocation)
-                .body(viewItemDto);
+           return ResponseEntity
+                   .created(uriLocation)
+                   .body(viewItemDto);
+
+       } catch (IllegalArgumentException ex) {
+           return ResponseEntity
+                   .notFound()
+                   .build();
+       }
+
     }
 
     @GetMapping("/items/by/owner/{ownerId}")
-    public ResponseEntity<List<ItemEntity>> getAll(@PathVariable(name = "ownerId") Long ownerId) {
+    public ResponseEntity<List<AllItemsProjectionDTO>> getAllItems(@PathVariable(name = "ownerId") Long ownerId) {
 
-        List<ItemEntity> allWithOwnerId = this.itemService.getAllWithOwnerId(ownerId);
+        List<AllItemsProjectionDTO> allWithOwnerId = this.itemService.getAllWithOwnerId(ownerId);
 
         return ResponseEntity.ok(allWithOwnerId);
     }

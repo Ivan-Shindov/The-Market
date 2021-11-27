@@ -1,6 +1,7 @@
 package com.example.marketApp.model.dto;
 
 public class ViewItemDto {
+
     private Long id;
     private String name;
     private String ownerUsername;

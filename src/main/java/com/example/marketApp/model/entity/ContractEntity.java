@@ -1,25 +1,22 @@
 package com.example.marketApp.model.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
 @Table(name = "contracts")
 public class ContractEntity extends BaseEntity {
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private UserEntity seller;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private UserEntity buyer;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private ItemEntity item;
 
-    @Column(precision = 0, nullable = false)
+    @Column(nullable = false)
     private BigDecimal price;
 
     @Column

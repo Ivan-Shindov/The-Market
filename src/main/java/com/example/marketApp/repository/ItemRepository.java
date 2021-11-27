@@ -1,20 +1,27 @@
 package com.example.marketApp.repository;
 
-import com.example.marketApp.model.dto.ViewItemDto;
 import com.example.marketApp.model.entity.ItemEntity;
+import com.example.marketApp.model.projection.AllItemsProjectionDTO;
+import com.example.marketApp.model.projection.ItemProjectionDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface ItemRepository extends JpaRepository<ItemEntity, Long> {
 
-    @Query("SELECT i FROM ItemEntity i JOIN FETCH i.owner o WHERE i.id = :id")
-    Optional<ItemEntity> findByItemId(Long id);
+    @Query(value = "SELECT i.id as id, i.name as name, u.username as ownerName FROM market_db.items AS i " +
+            "JOIN market_db.users AS u ON i.owner_id = u.id WHERE i.id = :id",
+            nativeQuery = true)
+    ItemProjectionDTO findByItemId(Long id);
 
-    @Query("SELECT i FROM ItemEntity i JOIN FETCH i.owner o WHERE i.owner.id = :ownerId")
+    @Query("SELECT i FROM ItemEntity i LEFT JOIN FETCH i.owner o WHERE i.owner.id = :ownerId")
     List<ItemEntity> findAllByOwnerId(Long ownerId);
+
+    @Query(value = "SELECT i.id AS id, i.name AS name, u.id AS ownerId, u.username AS ownerUsername " +
+            "FROM market_db.items AS i JOIN market_db.users AS u ON u.id = i.owner_id WHERE u.id = :id",
+            nativeQuery = true)
+    List<AllItemsProjectionDTO> findAllItemsByOwnerId(Long id);
 }

@@ -1,11 +1,15 @@
 package com.example.marketApp.web;
 
-import com.example.marketApp.model.projection.ViewProjectionUserDto;
+import com.example.marketApp.model.dto.PostUserDto;
+import com.example.marketApp.model.entity.UserEntity;
+import com.example.marketApp.model.dto.ViewUserDTO;
+import com.example.marketApp.model.projection.ItemProjectionDTO;
 import com.example.marketApp.service.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
 public class UserController {
@@ -16,13 +20,41 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/users/{id}")
-    public ResponseEntity<ViewProjectionUserDto> getUser(@PathVariable Long id) {
+    @GetMapping("/users/{id}/items")
+    public ResponseEntity<ViewUserDTO> getUserWithItems(@PathVariable Long id) {
 
-        ViewProjectionUserDto view = this.userService.getUserById(id);
+        try {
+            ViewUserDTO view = this.userService.getUserWithItemsByUserId(id);
+            return ResponseEntity.ok(view);
+
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity
+                    .notFound()
+                    .build();
+        }
+    }
+
+    @GetMapping("/users/{id}")
+    public ResponseEntity<ItemProjectionDTO> getUser(@PathVariable Long id) {
+
+        ItemProjectionDTO view = this.userService.getUserById(id);
 
         return ResponseEntity.ok(view);
     }
 
-    //TODO post mapping
+    @PostMapping("/users")
+    public ResponseEntity<UserEntity> addUser(@RequestBody PostUserDto postUserDto,
+                                              UriComponentsBuilder builder) {
+
+        UserEntity userEntity = this.userService.addUser(postUserDto);
+
+        URI uriLocation = builder.path("/users/{id}")
+                .buildAndExpand(userEntity.getId())
+                .toUri();
+
+        return ResponseEntity
+                .created(uriLocation)
+                .body(userEntity);
+    }
+
 }
