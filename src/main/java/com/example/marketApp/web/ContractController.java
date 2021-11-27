@@ -2,11 +2,11 @@ package com.example.marketApp.web;
 
 import com.example.marketApp.model.dto.PostContractDto;
 import com.example.marketApp.model.dto.ViewContractDto;
+import com.example.marketApp.model.entity.ContractEntity;
+import com.example.marketApp.model.projection.ContractInfoProjectionDTO;
 import com.example.marketApp.service.ContractService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
@@ -43,5 +43,17 @@ public class ContractController {
                     .notFound()
                     .build();
         }
+    }
+
+    @GetMapping("/contract/{id}")
+    public ResponseEntity<ContractInfoProjectionDTO> getContract(@PathVariable Long id) {
+       try {
+           ContractInfoProjectionDTO contract = this.contractService.getContractById(id);
+        return ResponseEntity.ok(contract);
+
+       } catch (NullPointerException ex) {
+
+           return ResponseEntity.notFound().build();
+       }
     }
 }

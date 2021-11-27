@@ -4,13 +4,12 @@ import com.example.marketApp.model.dto.PostContractDto;
 import com.example.marketApp.model.dto.ViewContractDto;
 import com.example.marketApp.model.entity.ContractEntity;
 import com.example.marketApp.model.entity.ItemEntity;
+import com.example.marketApp.model.projection.ContractInfoProjectionDTO;
 import com.example.marketApp.repository.ContractRepository;
 import com.example.marketApp.repository.ItemRepository;
 import com.example.marketApp.service.ContractService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class ContractServiceImpl implements ContractService {
@@ -45,5 +44,16 @@ public class ContractServiceImpl implements ContractService {
             this.contractRepository.save(contractEntity);
 
         return modelMapper.map(contractEntity, ViewContractDto.class);
+    }
+
+    @Override
+    public ContractInfoProjectionDTO getContractById(Long id) {
+
+        ContractInfoProjectionDTO contractInfo = this.contractRepository.getContractById(id);
+
+        if (contractInfo.getId() == null) {
+            System.out.println("EXCEPTION HERE ! NOT FOUND CONTRACT");
+        }
+        return contractInfo;
     }
 }
