@@ -6,11 +6,11 @@ import com.example.marketApp.model.projection.ActiveContractInfoProjection;
 import com.example.marketApp.model.projection.ContractInfoProjection;
 import com.example.marketApp.model.projection.ContractInfoProjectionDTO;
 import com.example.marketApp.service.ContractService;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.transaction.Transactional;
 import java.net.URI;
 import java.util.List;
 
@@ -19,12 +19,11 @@ public class ContractController {
 
     private final ContractService contractService;
 
-
     public ContractController(ContractService contractService) {
         this.contractService = contractService;
     }
 
-
+    @Transactional
     @PostMapping("/contract/create")
     public ResponseEntity<ViewContractDto> create(
             @RequestBody PostContractDto postContractDto,

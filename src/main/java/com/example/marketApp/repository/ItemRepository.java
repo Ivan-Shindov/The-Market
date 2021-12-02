@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ItemRepository extends JpaRepository<ItemEntity, Long> {
@@ -18,6 +19,9 @@ public interface ItemRepository extends JpaRepository<ItemEntity, Long> {
             "JOIN market_db.users AS u ON i.owner_id = u.id WHERE i.id = :id",
             nativeQuery = true)
     ItemProjectionDTO findByItemId(Long id);
+
+    @Query("SELECT i FROM ItemEntity i JOIN FETCH i.owner WHERE i.id = :itemId")
+    Optional<ItemEntity> findItemById(Long itemId);
 
     // JPQL query not from bonus.
     @Query("SELECT i FROM ItemEntity i LEFT JOIN FETCH i.owner o WHERE i.owner.id = :ownerId")

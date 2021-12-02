@@ -24,8 +24,9 @@ public interface ContractRepository extends JpaRepository<ContractEntity,Long> {
 
     @Transactional
     @Modifying
-    @Query("UPDATE ContractEntity c SET c.price = :price WHERE c.item.id = :itemId AND c.active = true")
-    Integer updateActiveContractWithItemId(Long itemId, BigDecimal price);
+    @Query("UPDATE ContractEntity c SET c.price = :price " +
+            "WHERE c.id = :id AND c.active = true AND c.item.id = :itemId")
+    Integer updateActiveContractWithItemId(BigDecimal price, Long id, Long itemId);
 
     @Query("SELECT c FROM ContractEntity c WHERE c.id = :id")
     ContractEntity findContractById(Long id);

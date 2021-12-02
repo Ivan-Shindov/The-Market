@@ -40,7 +40,7 @@ public class ContractServiceImpl implements ContractService {
 
         Long itemId = contractDto.getItemId();
 
-        ItemEntity item = this.itemRepository.findById(itemId)
+        ItemEntity item = this.itemRepository.findItemById(itemId)
                 .orElseThrow(() -> new IllegalArgumentException("No such item with id: " + itemId + " in Database."));
 
         ContractEntity contractEntity = new ContractEntity();
@@ -68,6 +68,7 @@ public class ContractServiceImpl implements ContractService {
 
     @Override
     public Long updateContract(UpdateContractDTO contractDTO, Long id) {
+
         Long itemId = contractDTO.getItemId();
         ItemProjectionDTO itemProjectionDTO = this.itemRepository.findByItemId(itemId);
 
@@ -79,7 +80,7 @@ public class ContractServiceImpl implements ContractService {
             throw new IllegalArgumentException("Not found contract with ID: " + id);
         }
 
-        Integer updatedId = this.contractRepository.updateActiveContractWithItemId(itemId, contractDTO.getPrice());
+        Integer updatedId = this.contractRepository.updateActiveContractWithItemId(contractDTO.getPrice(), id, itemId);
 
 
         return updatedId.longValue();

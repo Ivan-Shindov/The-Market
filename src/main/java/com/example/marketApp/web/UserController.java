@@ -3,7 +3,6 @@ package com.example.marketApp.web;
 import com.example.marketApp.model.dto.PostUserDto;
 import com.example.marketApp.model.entity.UserEntity;
 import com.example.marketApp.model.dto.ViewUserDTO;
-import com.example.marketApp.model.projection.ItemProjectionDTO;
 import com.example.marketApp.model.projection.UserWithoutItemsProjection;
 import com.example.marketApp.service.UserService;
 import org.springframework.http.ResponseEntity;

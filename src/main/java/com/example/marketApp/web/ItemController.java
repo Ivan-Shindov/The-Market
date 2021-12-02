@@ -2,7 +2,6 @@ package com.example.marketApp.web;
 
 import com.example.marketApp.model.dto.PostItemDto;
 import com.example.marketApp.model.dto.ViewItemDto;
-import com.example.marketApp.model.entity.ItemEntity;
 import com.example.marketApp.model.projection.AllItemsProjectionDTO;
 import com.example.marketApp.model.projection.ItemProjectionDTO;
 import com.example.marketApp.service.ItemService;
