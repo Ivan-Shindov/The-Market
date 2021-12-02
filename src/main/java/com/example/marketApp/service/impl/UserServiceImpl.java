@@ -7,7 +7,6 @@ import com.example.marketApp.model.dto.ViewUserDTO;
 import com.example.marketApp.model.projection.UserWithoutItemsProjection;
 import com.example.marketApp.repository.UserRepository;
 import com.example.marketApp.service.UserService;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,11 +17,9 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final ModelMapper modelMapper;
 
-    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper) {
+    public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -34,10 +31,16 @@ public class UserServiceImpl implements UserService {
 
         List<ViewUserItemsDTO> items = userEntity.getItems()
                 .stream()
-                .map(item -> modelMapper.map(item, ViewUserItemsDTO.class))
+                .map(item -> {
+                    ViewUserItemsDTO viewUserItemsDTO = new ViewUserItemsDTO();
+                    viewUserItemsDTO.setId(item.getId())
+                            .setName(item.getName());
+                    return viewUserItemsDTO;
+                })
                 .collect(Collectors.toList());
 
-        return new ViewUserDTO(userEntity.getId(),
+        return new ViewUserDTO(
+                userEntity.getId(),
                 userEntity.getUsername(),
                 userEntity.getAccount(),
                 items);
@@ -52,16 +55,17 @@ public class UserServiceImpl implements UserService {
                         .orElse(null);
 
         if (userEntity == null) {
-            userEntity = modelMapper.map(postUserDto, UserEntity.class);
+            UserEntity entity = new UserEntity().setId(postUserDto.getId())
+                    .setUsername(postUserDto.getUsername())
+                    .setAccount(postUserDto.getAccount());
+            this.userRepository.save(entity);
+
+            return entity;
+
         } else {
-            // if there is already user with same username, just updates account value
-            //userEntity.setAccount(postUserDto.getAccount());
-            throw new RuntimeException("There is already user with this username: " + postUserDto.getUsername());
+            throw new IllegalArgumentException("There is already user with this username: " + postUserDto.getUsername());
         }
 
-        this.userRepository.save(userEntity);
-
-        return userEntity;
     }
 
     @Override
