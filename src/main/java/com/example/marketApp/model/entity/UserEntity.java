@@ -16,7 +16,7 @@ public class UserEntity extends BaseEntity {
     private BigDecimal account;
 
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY,
-            cascade = CascadeType.PERSIST)
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<ItemEntity> items = new ArrayList<>();
 
     public UserEntity(){}
@@ -63,5 +63,10 @@ public class UserEntity extends BaseEntity {
     public UserEntity setId(Long id) {
         super.setId(id);
         return this;
+    }
+
+    @Override
+    public Long getId(){
+        return super.getId();
     }
 }

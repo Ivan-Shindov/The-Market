@@ -4,7 +4,7 @@ import com.example.marketApp.model.dto.PostUserDto;
 import com.example.marketApp.model.dto.ViewUserItemsDTO;
 import com.example.marketApp.model.entity.UserEntity;
 import com.example.marketApp.model.dto.ViewUserDTO;
-import com.example.marketApp.model.projection.ItemProjectionDTO;
+import com.example.marketApp.model.projection.UserWithoutItemsProjection;
 import com.example.marketApp.repository.UserRepository;
 import com.example.marketApp.service.UserService;
 import org.modelmapper.ModelMapper;
@@ -65,9 +65,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ItemProjectionDTO getUserById(Long id) {
+    public UserWithoutItemsProjection getUserById(Long id) {
 
-        ItemProjectionDTO userView = this.userRepository.getUserById(id);
+        UserWithoutItemsProjection userView = this.userRepository.getUserById(id);
 
         return userView;
     }

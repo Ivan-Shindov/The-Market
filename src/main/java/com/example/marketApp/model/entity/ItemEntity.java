@@ -12,7 +12,7 @@ public class ItemEntity extends BaseEntity {
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY,
-            cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.DETACH})
     private UserEntity owner;
 
     public ItemEntity() {

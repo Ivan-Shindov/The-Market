@@ -24,3 +24,6 @@ VALUES (1, 100, 1, 1, 3, true);
 
 INSERT INTO contracts (id, price, seller_id, item_id, buyer_id, active)
 VALUES (2, 10, 2, 3, 1, true);
+
+INSERT INTO contracts (id, price, seller_id, item_id, buyer_id, active)
+VALUES (3, 120, 3, 1, 2, false);

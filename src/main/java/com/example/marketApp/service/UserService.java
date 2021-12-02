@@ -4,6 +4,7 @@ import com.example.marketApp.model.dto.PostUserDto;
 import com.example.marketApp.model.entity.UserEntity;
 import com.example.marketApp.model.dto.ViewUserDTO;
 import com.example.marketApp.model.projection.ItemProjectionDTO;
+import com.example.marketApp.model.projection.UserWithoutItemsProjection;
 
 public interface UserService {
 
@@ -11,5 +12,5 @@ public interface UserService {
 
     UserEntity addUser(PostUserDto postUserDto);
 
-    ItemProjectionDTO getUserById(Long id);
+    UserWithoutItemsProjection getUserById(Long id);
 }

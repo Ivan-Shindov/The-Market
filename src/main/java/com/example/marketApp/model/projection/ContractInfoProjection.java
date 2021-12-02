@@ -2,7 +2,7 @@ package com.example.marketApp.model.projection;
 
 import java.math.BigDecimal;
 
-public class ContractInfoDTO {
+public class ContractInfoProjection {
 
     private Long id;
     private String seller;
@@ -11,7 +11,7 @@ public class ContractInfoDTO {
     private BigDecimal price;
     private boolean active;
 
-    public ContractInfoDTO(Long id, String seller, String buyer, String item, BigDecimal price, boolean active) {
+    public ContractInfoProjection(Long id, String seller, String buyer, String item, BigDecimal price, boolean active) {
         this.id = id;
         this.seller = seller;
         this.buyer = buyer;
@@ -20,13 +20,13 @@ public class ContractInfoDTO {
         this.active = active;
     }
 
-    public ContractInfoDTO(){}
+    public ContractInfoProjection(){}
 
     public Long getId() {
         return id;
     }
 
-    public ContractInfoDTO setId(Long id) {
+    public ContractInfoProjection setId(Long id) {
         this.id = id;
         return this;
     }
@@ -35,7 +35,7 @@ public class ContractInfoDTO {
         return seller;
     }
 
-    public ContractInfoDTO setSeller(String seller) {
+    public ContractInfoProjection setSeller(String seller) {
         this.seller = seller;
         return this;
     }
@@ -44,7 +44,7 @@ public class ContractInfoDTO {
         return buyer;
     }
 
-    public ContractInfoDTO setBuyer(String buyer) {
+    public ContractInfoProjection setBuyer(String buyer) {
         this.buyer = buyer;
         return this;
     }
@@ -53,7 +53,7 @@ public class ContractInfoDTO {
         return item;
     }
 
-    public ContractInfoDTO setItem(String item) {
+    public ContractInfoProjection setItem(String item) {
         this.item = item;
         return this;
     }
@@ -62,7 +62,7 @@ public class ContractInfoDTO {
         return price;
     }
 
-    public ContractInfoDTO setPrice(BigDecimal price) {
+    public ContractInfoProjection setPrice(BigDecimal price) {
         this.price = price;
         return this;
     }
@@ -71,7 +71,7 @@ public class ContractInfoDTO {
         return active;
     }
 
-    public ContractInfoDTO setActive(boolean active) {
+    public ContractInfoProjection setActive(boolean active) {
         this.active = active;
         return this;
     }

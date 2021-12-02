@@ -4,6 +4,7 @@ import com.example.marketApp.model.dto.PostUserDto;
 import com.example.marketApp.model.entity.UserEntity;
 import com.example.marketApp.model.dto.ViewUserDTO;
 import com.example.marketApp.model.projection.ItemProjectionDTO;
+import com.example.marketApp.model.projection.UserWithoutItemsProjection;
 import com.example.marketApp.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,9 +36,9 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    public ResponseEntity<ItemProjectionDTO> getUser(@PathVariable Long id) {
+    public ResponseEntity<UserWithoutItemsProjection> getUser(@PathVariable Long id) {
 
-        ItemProjectionDTO view = this.userService.getUserById(id);
+        UserWithoutItemsProjection view = this.userService.getUserById(id);
 
         return ResponseEntity.ok(view);
     }

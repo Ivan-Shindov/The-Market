@@ -1,11 +1,13 @@
 package com.example.marketApp.repository;
 
+import com.example.marketApp.model.entity.ItemEntity;
 import com.example.marketApp.model.entity.UserEntity;
-import com.example.marketApp.model.projection.ItemProjectionDTO;
+import com.example.marketApp.model.projection.UserWithoutItemsProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -15,13 +17,16 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     Optional<UserEntity> findByUsername(String username);
 
     @Query("SELECT u.id as id, u.username as username, u.account as account FROM UserEntity u WHERE u.id = :id")
-    ItemProjectionDTO getUserById(Long id);
+    UserWithoutItemsProjection getUserById(Long id);
 
-    @Query("SELECT u.username AS username, u.account AS account FROM UserEntity u WHERE u.id = :id")
-    ItemProjectionDTO getProjection(Long id);
+//    @Query("SELECT u.username AS username, u.account AS account FROM UserEntity u WHERE u.id = :id")
+//    ItemProjectionDTO getProjection(Long id);
 
     @Query("SELECT u FROM UserEntity u LEFT JOIN FETCH u.items WHERE u.id = :ownerId")
     Optional<UserEntity> findOwner(Long ownerId);
+
+//    @Query("SELECT u.id FROM UserEntity u WHERE u.id = :buyerId")
+//    Long isThereValidId(Long buyerId);
 
 //    @Query("SELECT i.id, i.name, u.username FROM UserEntity u LEFT JOIN FETCH u.items i WHERE u.id = :id")
 //    List<ViewItemDtoIfc> getAllItemsOfUser(Long id);

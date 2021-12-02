@@ -62,10 +62,10 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<AllItemsProjectionDTO> getAllWithOwnerId(Long ownerId) {
-//        List<ItemEntity> itemEntities = this.itemRepository.findAllByOwnerId(ownerId);
+        List<ItemEntity> itemEntities = this.itemRepository.findAllByOwnerId(ownerId);
 
         List<AllItemsProjectionDTO> itemsByOwner = this.itemRepository.findAllItemsByOwnerId(ownerId);
-
+        System.out.println();
         return itemsByOwner;
     }
 }

@@ -1,19 +1,37 @@
 package com.example.marketApp.model.entity;
 
+import com.example.marketApp.model.projection.ActiveContractInfoProjection;
+import com.example.marketApp.model.projection.ContractInfoProjection;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
-
+@NamedNativeQuery(name = "ContractEntity.getAllWithActiveTrue",
+        query = "SELECT c.seller_id AS sellerId, s.username AS sellerUsername,i.id AS itemId, c.price AS price, c.active AS active " +
+                "FROM market_db.contracts AS c " +
+                "JOIN market_db.users AS s ON s.id = c.seller_id " +
+                "JOIN market_db.items AS i ON i.id = c.item_id " +
+                "WHERE c.active = true",
+        resultSetMapping = "projection.ActiveContractInfoProjection")
+@SqlResultSetMapping(name = "projection.ActiveContractInfoProjection",
+        classes = @ConstructorResult(targetClass = ActiveContractInfoProjection.class,
+                columns = {
+                        @ColumnResult(name = "sellerId",type = Long.class),
+                        @ColumnResult(name = "sellerUsername",type = String.class),
+                        @ColumnResult(name = "itemId", type = Long.class),
+                        @ColumnResult(name = "price", type = BigDecimal.class),
+                        @ColumnResult(name = "active",type = Boolean.class)
+                }))
 @Entity
 @Table(name = "contracts")
 public class ContractEntity extends BaseEntity {
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REMOVE})
     private UserEntity seller;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REMOVE})
     private UserEntity buyer;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REMOVE})
     private ItemEntity item;
 
     @Column(nullable = false)
