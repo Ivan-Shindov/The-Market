@@ -16,7 +16,7 @@ public class UserEntity extends BaseEntity {
     private BigDecimal account;
 
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY,
-            cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+            cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ItemEntity> items = new ArrayList<>();
 
     public UserEntity(){}
@@ -44,8 +44,11 @@ public class UserEntity extends BaseEntity {
     }
 
     public boolean removeItem(ItemEntity item) {
-        if (this.getItems().contains(item)) {
-           return this.items.remove(item);
+        for (ItemEntity currentItem : this.items) {
+            if (currentItem.getId().longValue() == item.getId().longValue()) {
+                this.items.remove(currentItem);
+                return true;
+            }
         }
         return false;
     }

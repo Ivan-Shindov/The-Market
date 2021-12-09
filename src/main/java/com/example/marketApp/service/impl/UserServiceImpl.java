@@ -55,15 +55,19 @@ public class UserServiceImpl implements UserService {
                         .orElse(null);
 
         if (userEntity == null) {
+            if (this.userRepository.existsById(postUserDto.getId())) {
+                throw new IllegalArgumentException("There is already user with id: " + postUserDto.getId());
+            }
             UserEntity entity = new UserEntity().setId(postUserDto.getId())
                     .setUsername(postUserDto.getUsername())
                     .setAccount(postUserDto.getAccount());
-            this.userRepository.save(entity);
+            UserEntity savedEntity = this.userRepository.save(entity);
 
-            return entity;
+            return savedEntity;
 
         } else {
-            throw new IllegalArgumentException("There is already user with this username: " + postUserDto.getUsername());
+            throw new IllegalArgumentException("There is already user with this username: "
+                    + postUserDto.getUsername());
         }
 
     }

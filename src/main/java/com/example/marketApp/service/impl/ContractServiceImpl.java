@@ -80,10 +80,11 @@ public class ContractServiceImpl implements ContractService {
             throw new IllegalArgumentException("Not found contract with ID: " + id);
         }
 
-        Integer updatedId = this.contractRepository.updateActiveContractWithItemId(contractDTO.getPrice(), id, itemId);
+        Integer updated = this.contractRepository
+                .updateActiveContractWithItemId(contractDTO.getPrice(), id, itemId);
 
 
-        return updatedId.longValue();
+        return updated.longValue();
     }
 
     @Override
@@ -144,6 +145,7 @@ public class ContractServiceImpl implements ContractService {
         this.itemRepository.changeItemOwner(itemId,buyerId);
 
         contract.setActive(false);
+        contract.setBuyer(buyerEntity);
 
         this.userRepository.saveAll(List.of(seller, buyerEntity));
         return this.contractRepository.save(contract).getId();

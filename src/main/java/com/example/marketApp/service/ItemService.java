@@ -2,7 +2,6 @@ package com.example.marketApp.service;
 
 import com.example.marketApp.model.dto.PostItemDto;
 import com.example.marketApp.model.dto.ViewItemDto;
-import com.example.marketApp.model.entity.ItemEntity;
 import com.example.marketApp.model.projection.AllItemsProjectionDTO;
 import com.example.marketApp.model.projection.ItemProjectionDTO;
 
@@ -14,4 +13,6 @@ public interface ItemService {
     ViewItemDto createItem(PostItemDto postItemDto);
 
     List<AllItemsProjectionDTO> getAllWithOwnerId(Long ownerId);
+
+    void deleteItem(Long id);
 }

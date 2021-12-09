@@ -62,9 +62,9 @@ public class ContractController {
     @PutMapping("/contract/{id}")
     public ResponseEntity<ContractInfoProjection> update(@RequestBody UpdateContractDTO updateContractDTO,
                                                          @PathVariable Long id) {
-        Long updatedContractId = this.contractService.updateContract(updateContractDTO, id);
+        Long updated = this.contractService.updateContract(updateContractDTO, id);
 
-        return updatedContractId != null ?
+        return updated != null ?
                 ResponseEntity.noContent().build()
                 : ResponseEntity.notFound().build();
     }

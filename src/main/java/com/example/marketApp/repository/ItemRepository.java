@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
@@ -37,4 +36,10 @@ public interface ItemRepository extends JpaRepository<ItemEntity, Long> {
     @Modifying
     @Query("UPDATE ItemEntity i SET i.owner.id = :buyerId WHERE i.id = :itemId")
     void changeItemOwner(Long itemId, Long buyerId);
+
+    @Transactional
+    @Modifying
+    @Query("DELETE FROM ItemEntity AS i WHERE i.id = :id")
+    void deleteItemById(Long id);
+
 }

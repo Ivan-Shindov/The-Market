@@ -62,10 +62,21 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<AllItemsProjectionDTO> getAllWithOwnerId(Long ownerId) {
-        List<ItemEntity> itemEntities = this.itemRepository.findAllByOwnerId(ownerId);
+//        List<ItemEntity> itemEntities = this.itemRepository.findAllByOwnerId(ownerId);
 
         List<AllItemsProjectionDTO> itemsByOwner = this.itemRepository.findAllItemsByOwnerId(ownerId);
-        System.out.println();
         return itemsByOwner;
+    }
+
+    // it works if you persist item with rest api, the initial data from data.sql file throws exception for foreign key.
+    @Override
+    public void deleteItem(Long id) {
+        ItemEntity item = this.itemRepository.findById(id).get();
+        UserEntity userEntity = this.userRepository.findOwner(item.getOwner().getId())
+                .orElseThrow(() -> new RuntimeException("No owner with id: " + item.getOwner().getId()));
+        userEntity.removeItem(item);
+        // it makes two times delete operation.
+        this.userRepository.save(userEntity);
+        this.itemRepository.deleteItemById(id);
     }
 }
