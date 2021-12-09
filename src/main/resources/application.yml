@@ -3,7 +3,7 @@ spring:
     driverClassName: com.mysql.cj.jdbc.Driver
     url: "jdbc:mysql://localhost:3306/market_db?useSSL=false&createDatabaseIfNotExist=true&serverTimezone=UTC"
     username: root
-    password: Ivan-12345
+    password: // password here
   sql:
     init:
       mode: always
